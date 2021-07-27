@@ -80,23 +80,21 @@ if (!empty($_POST)) {
         </p>
         <p><input type="submit" value="送信"></p>
     </form>
-    <?php if ($_SERVER["REQUEST_METHOD"] === "POST") : ?>
-        <?php if (isset($error)): ?>
-            <p class="error"><?=htmlspecialchars($error, ENT_QUOTES, 'UTF-8');?></p>
-        <?php else:?>
-            <table>
-                <tr>
-                    <th>配列<?=htmlspecialchars($arrPlus, ENT_QUOTES, 'UTF-8');?></th>
-                    <?php for ($i = 0; $i < count($numArr[$arr]); $i++):?>
-                        <td><?=htmlspecialchars($numArr[$arr][$i], ENT_QUOTES, 'UTF-8');?></td>
-                    <?php endfor;?>
-                    <th>合計<?=htmlspecialchars($total, ENT_QUOTES, 'UTF-8');?></th>
-                    <th>X <?=htmlspecialchars($num, ENT_QUOTES, 'UTF-8');?> =</th>
-                    <th>合計結果: <?=htmlspecialchars($result, ENT_QUOTES, 'UTF-8');?></th>
-                </tr>
-            </table>
-        <?php endif;?>
-    <?php endif; ?>
+    <?php if (isset($error)):?>
+        <p class="error"><?=htmlspecialchars($error, ENT_QUOTES, 'UTF-8');?></p>
+    <?php elseif($_SERVER['REQUEST_METHOD'] === 'POST'):?>
+        <table>
+            <tr>
+                <th>配列<?=htmlspecialchars($arrPlus, ENT_QUOTES, 'UTF-8');?></th>
+                <?php for ($i = 0; $i < count($numArr[$arr]); $i++):?>
+                    <td><?=htmlspecialchars($numArr[$arr][$i], ENT_QUOTES, 'UTF-8');?></td>
+                <?php endfor;?>
+                <th>合計<?=htmlspecialchars($total, ENT_QUOTES, 'UTF-8');?></th>
+                <th>X <?=htmlspecialchars($num, ENT_QUOTES, 'UTF-8');?> =</th>
+                <th>合計結果: <?=htmlspecialchars($result, ENT_QUOTES, 'UTF-8');?></th>
+            </tr>
+        </table>
+    <?php endif;?>
 </body>
 
 </html>
