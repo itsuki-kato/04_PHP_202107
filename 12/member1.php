@@ -5,6 +5,16 @@ class Member
     public $age;
     public $address;
 
+    public function __construct()
+    {
+        echo '<p>インスタンスが生成されました</p>';
+    }
+
+    public function __destruct()
+    {
+        echo '<p>' . $this->name . 'が破棄されます</p>';
+    }
+
     public function showInfo()
     {
         echo '<ul>';
