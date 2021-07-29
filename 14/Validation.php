@@ -7,7 +7,7 @@ class Validation
      * @param string|null $name
      * @return string|null
      */
-    public function validName(string|null $name): ?string
+    public function validName(?string $name): ?string
     {
         if ($name) {
             // 何かしらの入力があればnullを返す
@@ -25,7 +25,7 @@ class Validation
      * @param string|null $name
      * @return string|null
      */
-    public function validKana(string|null $kana): ?string
+    public function validKana(?string $kana): ?string
     {
 
         if ($kana === '') {
@@ -44,7 +44,7 @@ class Validation
      * @param string|null $name
      * @return string|null
      */
-    public function validPhone(string|null $phone): ?string
+    public function validPhone(?string $phone): ?string
     {
 
         if ($phone === '') {

@@ -5,11 +5,13 @@ $name  = '';
 $kana  = '';
 $phone = '';
 
-$error = true;
+$error = [
+    'name'  => '',
+    'kana'  => '',
+    'phone' => ''
+];
 
 if (!empty($_POST)) {
-
-    $error = [];
 
     $name = $_POST['name'];
     $kana = $_POST['kana'];
@@ -74,7 +76,7 @@ function h(?string $string): string
 
 <body>
     <h1>ユーザ情報入力</h1>
-    <?php if (!$error):?>
+    <?php if ($error['name'] == '' || $error['kana'] == '' || $error['phone'] == ''):?>
         <table>
             <tr>
                 <th>氏名</th>
