@@ -1,0 +1,23 @@
+.page_title{
+    color: #FF0000;
+}
+
+.data_table{
+    border: 1px solid #000000;
+    margin-bottom: 20px;
+}
+
+.data_table th{
+    border: 1px solid #000000;
+}
+
+.data_table td{
+    border: 1px solid #000000;
+    width: 150px;
+}
+
+.prime_minister_name{
+    color: #FF0000;
+    font-size: 18px;
+    font-weight: bold
+}

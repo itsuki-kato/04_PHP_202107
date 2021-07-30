@@ -1,0 +1,13 @@
+.pageTitle{
+color:red;
+}
+.data_table{
+border:1px solid #000000;
+}
+.data_table th{
+border:1px solid #000000;
+}
+.data_table_td{
+border:1px solid #000000;
+width:150px;
+}
