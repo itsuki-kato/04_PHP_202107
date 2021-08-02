@@ -100,16 +100,15 @@ $tableWidth = $size * $num;
         <p>
             画像幅：
             <select name="size">
-                <option <?= $size == 100 ? 'selected' : ''; ?>>100</option>
-                <option <?= $size == 150 ? 'selected' : ''; ?>>150</option>
-                <option <?= $size == 200 ? 'selected' : ''; ?>>200</option>
+                <?php for ($i = 100; $i <= 200; $i += 50):?>
+                    <option <?= $size == $i ? 'selected' : ''; ?>><?=h($i)?></option>
+                <?php endfor;?>
             </select>
         </p>
         <p>横並びの数：
-            <input type="radio" name="num" value="3" <?= $num == 3 ? 'checked' : ''; ?>>3
-            <input type="radio" name="num" value="4" <?= $num == 4 ? 'checked' : ''; ?>>4
-            <input type="radio" name="num" value="5" <?= $num == 5 ? 'checked' : ''; ?>>5
-            <input type="radio" name="num" value="6" <?= $num == 6 ? 'checked' : ''; ?>>6
+            <?php for ($j = 3; $j <= 6; $j++):?>
+            <input type="radio" name="num" value="<?=h($j)?>" <?= $num == $j ? 'checked' : ''; ?>><?=h($j)?>
+            <?php endfor;?>
         </p>
         <input type="file" name="upfile">
         <p><input type="submit" value="送信"></p>
