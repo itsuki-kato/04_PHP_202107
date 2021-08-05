@@ -3,53 +3,68 @@ require_once 'db.inc.php';
 require_once 'util.inc.php';
 
 $name = '';
-$age = '';
+$age  = null;
 $address = '';
-$isValidated = false;
+
+$error['name']  = '';
+$error['age']   = '';
+$result['err']  = '';
 
 if (!empty($_POST)) {
-    $isValidated = true;
     $name = $_POST['name'];
     $age = $_POST['age'];
     $address = $_POST['address'];
+    class Validation
+    {
+        function validName($name)
+        {
+            if ($name === '') {
+                return '※ 氏名を入力してください';
+            } elseif (mb_strlen($name) > 10) {
+                return '※ 氏名を10文字以内で入力してください';
+            } else {
+                return false;
+            }
+        }
 
-    if ($name === '') {
-        $nameError = '※ 氏名を入力してください';
-        $isValidated = false;
-    } elseif (mb_strlen($name) > 10) {
-        $nameError = '※ 氏名を10文字以内で入力してください';
-        $isValidated = false;
+        function validAge($age)
+        {
+            $res['err'] = false;
+
+            if ($age === '') {
+                $res['age'] = null;
+            } elseif (!is_numeric($age) || $age < 0) {
+                $res['age'] = $age;
+                $res['err'] = '※ 年齢は0以上の数値を入力してください';
+            } else {
+                $res['age'] = $age;
+            }
+            return $res;
+        }
     }
+    $v = new Validation();
+    $error['name'] = $v->validName($name);
 
-    if ($age === '') {
-        $age = null;
-    } elseif (!is_numeric($age) || $age < 0) {
-        $ageError = '※ 年齢は0以上の数値を入力してください';
-        $isValidated = false;
-    }
+    $res  = $v->validAge($age);
+    $age          = $res['age'];
+    $error['age'] = $res['err'];
 
-    if ($isValidated == true) {
+    if (!$error['name'] && !$error['age']) {
         try {
             $pdo = db_init();
-            // $sql = 'INSERT INTO members (name, age, address, created_at) VALUES (?, ?, ?, NOW())';
-            // $stmt = $pdo->prepare($sql);
-            // $stmt->execute([$name, $age, $address]);
-            $sql = 'INSERT INTO members (name, age, address, created_at)
-                VALUES (:name, :age, :address, NOW())';
+            $sql = 'INSERT INTO members (name, age, address, created_at) VALUES (?, ?, ?, NOW())';
             $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':name',    $name,    PDO::PARAM_STR);
-            $stmt->bindValue(':age',     $age,     PDO::PARAM_INT);
-            $stmt->bindValue(':address', $address, PDO::PARAM_STR);
-            $stmt->execute();
-
-            header('Location: member.php');
-            exit;
+            $stmt->execute([$name, $age, $address]);
         } catch (PDOException $e) {
             header('Content-Type: text/plain; charset=UTF-8', true, 500);
             exit($e->getMessage());
         }
     }
 }
+
+echo '<pre>';
+var_dump($error);
+echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -71,17 +86,20 @@ if (!empty($_POST)) {
 <body>
     <h1>会員登録</h1>
     <p><a href="member.php">会員一覧に戻る</a></p>
+    <?php if (!isset($error['name']) && !isset($error['age'])):?>
+        <p>登録完了しました。</p>
+    <?php else:?>
     <form action="" method="post">
         <p>
             氏名：<input type="text" name="name" value="<?= h($name) ?>">
-            <?php if (isset($nameError)) : ?>
-                <span class="error"><?= h($nameError) ?></span>
+            <?php if (isset($error['name'])) : ?>
+                <span class="error"><?= h($error['name']) ?></span>
             <?php endif; ?>
         </p>
         <p>
             年齢：<input type="text" name="age" value="<?= h($age) ?>">
-            <?php if (isset($ageError)) : ?>
-                <span class="error"><?= h($ageError) ?></span>
+            <?php if (isset($error['age'])) : ?>
+                <span class="error"><?= h($error['age']) ?></span>
             <?php endif; ?>
         </p>
         <p>
@@ -89,6 +107,7 @@ if (!empty($_POST)) {
         </p>
         <p><input type="submit" value="送信"></p>
     </form>
+    <?php endif;?>
 </body>
 
 </html>
